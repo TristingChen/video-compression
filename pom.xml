@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.11</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.zhifan</groupId>
+    <artifactId>video-compression</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>zhifan-common</module>
+        <module>zhifan-server</module>
+    </modules>
+
+    <properties>
+        <!--项目基础信息-->
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--SpringBoot-->
+        <spring-boot.version>2.6.11</spring-boot.version>
+        <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+        <nacos.client.version>2.2.0</nacos.client.version>
+        <!--ORM框架 MybatisPlus-->
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <mybatis.version>3.0.1</mybatis.version>
+        <pagehelper.version>1.4.6</pagehelper.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <!-- Minio 分布式文件存储依赖 -->
+        <minio.version>8.4.6</minio.version>
+        <okhttp.version>4.10.0</okhttp.version>
+        <!--json工具包-->
+        <fastjson2.version>2.0.21</fastjson2.version>
+        <druid.version>1.2.15</druid.version>
+        <guava.version>31.1-jre</guava.version>
+        <!-- HuTool开发工具包 -->
+        <hutool.version>5.8.10</hutool.version>
+        <!--sa-token-->
+        <sa-token.version>1.34.0</sa-token.version>
+        <!--JWT工具包-->
+        <jjwt.version>0.11.5</jjwt.version>
+        <!--easy-captcha 验证码-->
+        <easy-captcha.version>2.2.2</easy-captcha.version>
+        <!--文档工具包-->
+        <knife4j.version>3.0.3</knife4j.version>
+        <japidocs.version>1.4.4</japidocs.version>
+        <commons-langs.version>3.13.0</commons-langs.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!-- spring boot 依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--easy-captcha验证码增强 -->
+            <dependency>
+                <groupId>com.pig4cloud.plugin</groupId>
+                <artifactId>captcha-spring-boot-starter</artifactId>
+                <version>${easy-captcha.version}</version>
+            </dependency>
+            <!--文档工具-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-dependencies</artifactId>
+                <version>${knife4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--orm 相关-->
+            <!--mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!--fastjson2-->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <!--minio-->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <!-- HuTool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!--文档工具-->
+            <dependency>
+                <groupId>io.github.yedaxia</groupId>
+                <artifactId>japidocs</artifactId>
+                <version>${japidocs.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--测试依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <resources>
+            <!-- 配置所有的yml文件中，占位符生效 -->
+            <resource>
+                <directory>src/main/resource</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <!-- 插件仲裁 -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <!--插件管理-->
+        <!--这里的插件将会全局模块使用并生效-->
+        <plugins>
+            <plugin>
+                <!--编译插件-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!--JDK9 之后建议使用release方式来指定JDK版本，原source，target方式有问题-->
+                    <release>${java.version}</release>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgument> -Xlint:unchecked</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!--测试插件-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- 跳过打包单元测试 -->
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+    <!--配置不同的profile，对应不同的生产环境-->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <!--开发环境-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+        <profile>
+            <!--测试环境-->
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
+            <!--预演环境-->
+            <id>pred</id>
+            <properties>
+                <env>pred</env>
+            </properties>
+        </profile>
+        <profile>
+            <!--预演环境-->
+            <id>uat</id>
+            <properties>
+                <env>uat</env>
+            </properties>
+        </profile>
+        <profile>
+            <!--生产环境-->
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+            </properties>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: video-comporess
+  # 配置文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+
+server:
+  port: 8070
+
+# [可选] 日志配置, 一般不需要改
+logging:
+  config: classpath:logback-spring.xml
+
+#转换的文件路径
+fileDirectory: "D:\\BaiduNetdiskDownload"
+
