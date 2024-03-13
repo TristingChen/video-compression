@@ -7,6 +7,35 @@ spring:
       max-file-size: 200MB
       max-request-size: 200MB
 
+  datasource:
+    username: admin
+    password: 123456
+    url: jdbc:sqlite:./pro.db
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      # 初始化表
+      schema-locations: classpath:schema.sql
+      mode: always
+
+
+mybatis-plus:
+  global-config:
+    banner: off
+    db-config:
+      # logic-delete-field是entity的属性名
+      logic-delete-field: deleteFlag
+      # 1 代表已删除，不配置默认是1
+      logic-delete-value: 1
+      # 0 代表未删除，不配置默认是0
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
 server:
   port: 8070
 
