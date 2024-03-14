@@ -1,6 +1,7 @@
 spring:
   application:
     name: video-comporess
+
   # 配置文件上传大小限制
   servlet:
     multipart:
@@ -17,6 +18,9 @@ spring:
       # 初始化表
       schema-locations: classpath:schema.sql
       mode: always
+  web:
+    resources:
+      static-locations: "classpath:/dist"
 
 
 mybatis-plus:
