@@ -3,6 +3,8 @@ package com.zhifan.utils;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.coremedia.iso.IsoFile;
+import com.coremedia.iso.boxes.Box;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.zhifan.constant.LogTemplate;
@@ -308,6 +310,25 @@ public class JavaCvUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        videoConvert("D:\\BaiduNetdiskDownload\\原始文件.MP4","./outfile.mp4");
+//        videoConvert("D:\\BaiduNetdiskDownload\\原始文件.MP4","./outfile.mp4");
+        check();
+    }
+
+    static void  check(){
+//        File mp4File = new File("path/to/your/mp4/file.mp4");
+        String videoFilePath = "./outfile0.mp4";
+
+        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoFilePath);
+        try {
+            grabber.start();
+            System.out.println("Duration (in seconds): " + grabber.getLengthInTime() / 1000000);
+            System.out.println("Bitrate: " + grabber.getVideoBitrate());
+            System.out.println("Resolution: " + grabber.getImageWidth() + "x" + grabber.getImageHeight());
+            // 可以根据需要获取更多信息
+
+            grabber.stop();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
