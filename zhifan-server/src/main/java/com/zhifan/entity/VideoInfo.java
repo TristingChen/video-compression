@@ -3,7 +3,10 @@ package com.zhifan.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @author chenjialing
@@ -14,6 +17,11 @@ public class VideoInfo {
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
+
+    /**
+     * 全局的路径id
+     */
+    private Long fileConfigId;
     /**
      * 文件目录
      */
@@ -50,8 +58,11 @@ public class VideoInfo {
      */
     private float compressFileSize;
 
-    private String createdAt;
-    private String updatedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime createdAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime updatedAt;
 
 
 
