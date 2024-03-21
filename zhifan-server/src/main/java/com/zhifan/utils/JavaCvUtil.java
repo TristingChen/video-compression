@@ -1,12 +1,16 @@
 package com.zhifan.utils;
 
 import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.zhifan.constant.LogTemplate;
+import com.zhifan.entity.VideoInfo;
 import com.zhifan.exception.BusinessException;
+import com.zhifan.vo.CompressProcessVo;
 import lombok.extern.slf4j.Slf4j;
 import org.bytedeco.ffmpeg.avcodec.AVCodecParameters;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
@@ -15,8 +19,11 @@ import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacv.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.print.attribute.standard.Media;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,29 +33,41 @@ import java.util.List;
  * @author chenjialing
  */
 @Slf4j
+@Component
 public class JavaCvUtil {
 
+    @Value("${ffmpegCommand:\"\"}")
+    private static String ffmpegCommond;
+    
+
+    private static long miniVideoBitrate = 2000000;
     /**
      * 基于JavaCV跨平台调用ffmpeg命令
      * duration 录制时长为多少秒的视频
      */
-    public static String convertByCommand(String sourcePath, String destPath, String duration) {
+    public static CompressProcessVo convertByFfmpeg(String sourcePath, String destPath,int videoBitrate) {
         StopWatch stopWatch = new StopWatch();
+        CompressProcessVo compressProcessVo = new CompressProcessVo();
         stopWatch.start("开始执行基于JavaCV跨平台调用ffmpeg命令录制视频");
         try {
+            String ffmpeg;
+            ProcessBuilder pb;
+            if(ObjectUtil.isEmpty(ffmpegCommond)){
+                ffmpeg = ffmpegCommond.replace("{input_file}", sourcePath).replace("{output_file}", destPath).replace("{videoBitrate}",String.valueOf(videoBitrate));
+                pb = new ProcessBuilder(ffmpeg);
 
-            String ffmpeg = Loader.load(org.bytedeco.ffmpeg.ffmpeg.class);
-            ProcessBuilder pb = new ProcessBuilder(ffmpeg, "-i", sourcePath, "-vcodec", "h264", destPath);
-            if (StrUtil.isNotBlank(duration)) {
-                pb = new ProcessBuilder(ffmpeg, "-i", sourcePath, "-vcodec", "h264", "-t", duration, destPath);
+            }{
+                ffmpeg = Loader.load(org.bytedeco.ffmpeg.ffmpeg.class);
+                pb = new ProcessBuilder(ffmpeg, "-i", sourcePath, "-b:v",String.valueOf(videoBitrate), destPath);
             }
             pb.inheritIO().start().waitFor();
+            compressProcessVo.setFlag(Boolean.TRUE);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
         stopWatch.stop();
         log.info("【convertByFfmpegCommand】::stopWatch.getTotalTimeSeconds() ==> 【{}】", stopWatch.getTotalTimeSeconds());
-        return destPath;
+        return compressProcessVo;
 
     }
 
@@ -173,6 +192,61 @@ public class JavaCvUtil {
             }
             grabber.close();
         }
+    }
+    public static VideoInfo videoMp4Convert(String inputfile, String outputfile) throws Exception{
+        VideoInfo videoInfo = new VideoInfo();
+        //获取文件的基本信息
+        FFmpegLogCallback.set();
+        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputfile);
+        File file = new File(inputfile);
+        long fileSize = file.length(); // 返回文件大小，单位为字节
+
+        videoInfo.setFileSize(fileSize);
+        // 初始化帧抓取器，例如数据结构（时间戳、编码器上下文、帧对象等），
+        // 如果入参等于true，还会调用avformat_find_stream_info方法获取流的信息，放入AVFormatContext类型的成员变量oc中
+        grabber.start(true);
+
+        // 取得视频的帧率
+        int framerate = (int) grabber.getVideoFrameRate();
+        // 视频宽度
+        int frameWidth = grabber.getImageWidth();
+        // 视频高度
+        int frameHeight = grabber.getImageHeight();
+        // 音频通道数量
+        int audiochannels = grabber.getAudioChannels();
+
+        int videoBitrate = grabber.getVideoBitrate();
+
+        long duration = grabber.getLengthInTime()/ 1000;
+        grabber.close();
+        videoInfo.setDuration(duration);
+        //判断如果码率过小  则不进行转码
+        if(miniVideoBitrate>duration){
+            videoInfo.setStatus(2);
+
+            return videoInfo;
+        }else {
+            double v = 0.2;
+            double newVideoBitrate = videoBitrate * v;
+            CompressProcessVo compressProcessVo = convertByFfmpeg(inputfile, outputfile, (int) newVideoBitrate);
+            videoInfo.setCompressDuration(compressProcessVo.getCompressDuration());
+            if(compressProcessVo.getFlag()){
+                videoInfo.setStatus(2);
+            }else {
+                videoInfo.setStatus(3);
+            }
+            //新的转码后的文件覆盖之前的文件
+            File oldFile = new File(inputfile);
+            File newFile = new File(outputfile);
+            // 使用 FileUtils.copyFile() 方法实现文件覆盖
+            FileUtil.copyFile(oldFile, newFile);
+            FileUtil.del(oldFile);
+            FileUtil.rename(newFile,inputfile,true);
+            System.out.println("文件覆盖成功");
+        }
+        return videoInfo;
+
+
     }
     public static String videoConvert(String inputFile, String outputPath, Integer width, Integer height, String videoFormat) {
         List<String> paths = Splitter.on(".").splitToList(inputFile);

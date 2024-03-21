@@ -23,9 +23,18 @@ public class VideoInfo {
      */
     private Long fileConfigId;
     /**
-     * 文件目录
+     * 绝对路径
      */
-    private String filePath;
+    private String fullFilePath;
+    /**
+     * 绝对文件目录
+     */
+    private String fullFileDirectory;
+
+    /**
+     * 压缩后名称的全路径
+     */
+    private String fullCompressFilePath;
 
     /**
      * 文件名称
@@ -45,6 +54,11 @@ public class VideoInfo {
      * 视频长度
      */
     private float duration;
+
+    /**
+     * 转码花费的时间
+     */
+    private float compressDuration;
     /**
      * 音视频通道个数
      */
@@ -63,11 +77,6 @@ public class VideoInfo {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime updatedAt;
-
-
-
-
-
 
 
 }
