@@ -3,6 +3,7 @@ package com.zhifan.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhifan.entity.VideoInfo;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -10,9 +11,10 @@ import java.util.List;
  */
 public interface VideoInfoService extends IService<VideoInfo> {
 
-    void saveOne(String absolutePath);
+    public final String fileNameSuffix = "zhifan";
+    void saveOne(File file);
 
-    void deleteOne(String absolutePath);
+    void deleteOne(File file);
 
     List<VideoInfo> getUnStartTask(int num);
 

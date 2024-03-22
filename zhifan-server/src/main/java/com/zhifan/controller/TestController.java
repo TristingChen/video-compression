@@ -35,7 +35,7 @@ public class TestController {
     public CommonResponse<Object> videoAreaList(){
         VideoInfo videoInfo = new VideoInfo();
         videoInfo.setFileName("test");
-        videoInfo.setFilePath("d:123123");
+//        videoInfo.setFilePath("d:123123");
         return CommonResponse.success(videoInfoService.save(videoInfo));
     }
 

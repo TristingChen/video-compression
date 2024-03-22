@@ -3,14 +3,19 @@ package com.zhifan.listener;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 
 /**
  * @author chenjialing
  */
+@Component
 public class FileMonitor {
 
+    @Autowired
+    FileListener fileListener;
 
 
     private static final FileMonitor instance = new FileMonitor();
@@ -24,13 +29,13 @@ public class FileMonitor {
     }
 
 
-    public static void addDirectoryListener(FileAlterationMonitor monitor, String directory) {
+    public  void addDirectoryListener(FileAlterationMonitor monitor, String directory) {
         FileAlterationObserver observer = new FileAlterationObserver(new File(directory));
-        observer.addListener(new FileListener());
+        observer.addListener(fileListener);
         monitor.addObserver(observer);
     }
 
-    public static void removeDirectoryListener(FileAlterationMonitor monitor, String directory) {
+    public  void removeDirectoryListener(FileAlterationMonitor monitor, String directory) {
         for (FileAlterationObserver observer : monitor.getObservers()) {
             if (observer.getDirectory().getPath().equals(directory)) {
                 monitor.removeObserver(observer);

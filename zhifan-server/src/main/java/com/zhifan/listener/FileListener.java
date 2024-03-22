@@ -1,10 +1,15 @@
 package com.zhifan.listener;
 
 import cn.hutool.core.io.FileTypeUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.zhifan.constant.LogTemplate;
+import com.zhifan.service.VideoInfoService;
+import freemarker.template.utility.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -16,7 +21,10 @@ import java.io.File;
 @Component
 public class FileListener extends FileAlterationListenerAdaptor {
 
-    private final String fileType = "mp4";
+
+
+    @Autowired
+    VideoInfoService videoInfoService;
 
     @Override
     public void onStart(FileAlterationObserver observer) {
@@ -40,13 +48,10 @@ public class FileListener extends FileAlterationListenerAdaptor {
 
     @Override
     public void onFileCreate(File file) {
-        String compressedPath = file.getAbsolutePath();
         //进行数据库任务的添加 文件格式需要是mp4结尾的 mdf的不需要处理
-        log.info(LogTemplate.PROCESS_LOG_MSG_TEMPLATE,"文件监听","新增",compressedPath);
-        String typeByPath = FileTypeUtil.getTypeByPath(compressedPath);
-        if(fileType.equals(typeByPath)){
-            //新增
-        }
+        log.info(LogTemplate.PROCESS_LOG_MSG_TEMPLATE,"文件监听","新增",file.getAbsolutePath());
+        videoInfoService.saveOne(file);
+
     }
 
     @Override

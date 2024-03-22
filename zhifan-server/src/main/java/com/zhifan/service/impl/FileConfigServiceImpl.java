@@ -17,6 +17,7 @@ import com.zhifan.service.VideoInfoService;
 import com.zhifan.vo.FileConfigReq;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -33,6 +34,8 @@ import java.util.Stack;
 public class FileConfigServiceImpl extends ServiceImpl<FileConfigMapper, FileConfig> implements FileConfigService {
     private static FileAlterationMonitor monitor;
 
+    @Autowired
+    FileMonitor fileMonitor;
     @PostConstruct
     private void init(){
         monitor = new FileAlterationMonitor(5000);
@@ -71,7 +74,7 @@ public class FileConfigServiceImpl extends ServiceImpl<FileConfigMapper, FileCon
     @Override
     public void monitorPath(String path) {
         //进入文件变化的扫描
-        FileMonitor.addDirectoryListener(monitor,path);
+        fileMonitor.addDirectoryListener(monitor,path);
     }
 
     /**
@@ -85,7 +88,7 @@ public class FileConfigServiceImpl extends ServiceImpl<FileConfigMapper, FileCon
         FileConfig oneById = this.getById(id);
         if(!oneById.getGlobalFilePath().equals(req.getGlobalFilePath())){
             ////先取消原来的目录监听
-            FileMonitor.removeDirectoryListener(monitor,oneById.getGlobalFilePath());
+            fileMonitor.removeDirectoryListener(monitor,oneById.getGlobalFilePath());
         }
         //重新监听
         BeanUtil.copyProperties(req,oneById);
