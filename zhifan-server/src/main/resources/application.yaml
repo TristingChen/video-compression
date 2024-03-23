@@ -47,5 +47,5 @@ server:
 logging:
   config: classpath:logback-spring.xml
 
-ffmpegCommand: "ffmpeg -i {input_file} -b:v {videoBitrate} -bufsize 1000k  {output_file}"
+#ffmpegCommand: "ffmpeg -i {input_file} -b:v {videoBitrate} -bufsize 1000k  {output_file}"
 

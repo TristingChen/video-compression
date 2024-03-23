@@ -38,6 +38,10 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
 
     @Autowired
     private FileConfigMapper fileConfigMapper;
+
+    @Autowired
+    JavaCvUtil javaCvUtil;
+
     @Override
     public void saveOne(File file) {
         //数据库判断是否已存在  以及处理状态判断
@@ -112,22 +116,21 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
             this.updateById(videoInfo);
         });
 
-//        unStartTask.forEach(videoInfo -> {
-//            taskExecutor.execute(()->{
-//                String fullFilePath = videoInfo.getFullFilePath();
-//                String outFilePath = videoInfo.getFullFileDirectory()+fileNameSuffix+videoInfo.getFileName();
-//
-//                try {
-//                    VideoInfo videoInfo1 = JavaCvUtil.videoMp4Convert(fullFilePath, outFilePath);
-//                    BeanUtil.copyProperties(videoInfo1,videoInfo);
-//                    videoInfo.setStatus(2);
-//                    this.updateById(videoInfo);
-//                } catch (Exception e) {
-//                    log.error(LogTemplate.ERROR_LOG_TEMPLATE,"文件压缩--异常",fullFilePath,e);
-//                    videoInfo.setStatus(-1);
-//                    this.updateById(videoInfo);
-//                }
-//            });
-//        });
+        unStartTask.forEach(videoInfo -> {
+            taskExecutor.execute(()->{
+                String fullFilePath = videoInfo.getFullFilePath();
+                String outFilePath = videoInfo.getFullFileDirectory()+File.separator+ fileNameSuffix+videoInfo.getFileName();
+
+                try {
+                    javaCvUtil.videoMp4Convert(fullFilePath, outFilePath,videoInfo);
+                    videoInfo.setStatus(2);
+                    this.updateById(videoInfo);
+                } catch (Exception e) {
+                    log.error(LogTemplate.ERROR_LOG_TEMPLATE,"文件压缩--异常",fullFilePath,e);
+                    videoInfo.setStatus(-1);
+                    this.updateById(videoInfo);
+                }
+            });
+        });
     }
 }

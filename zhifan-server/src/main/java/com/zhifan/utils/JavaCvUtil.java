@@ -38,9 +38,11 @@ public class JavaCvUtil {
 
     @Value("${ffmpegCommand:\"\"}")
     private static String ffmpegCommond;
-    
 
-    private static long miniVideoBitrate = 2000000;
+    /**
+     * 2m的以下的码率不要处理
+     */
+    private static long miniVideoBitrate = 2097152;
     /**
      * 基于JavaCV跨平台调用ffmpeg命令
      * duration 录制时长为多少秒的视频
@@ -52,7 +54,7 @@ public class JavaCvUtil {
         try {
             String ffmpeg;
             ProcessBuilder pb;
-            if(ObjectUtil.isEmpty(ffmpegCommond)){
+            if(!ObjectUtil.isEmpty(ffmpegCommond)){
                 ffmpeg = ffmpegCommond.replace("{input_file}", sourcePath).replace("{output_file}", destPath).replace("{videoBitrate}",String.valueOf(videoBitrate));
                 pb = new ProcessBuilder(ffmpeg);
 
@@ -67,6 +69,7 @@ public class JavaCvUtil {
         }
         stopWatch.stop();
         log.info("【convertByFfmpegCommand】::stopWatch.getTotalTimeSeconds() ==> 【{}】", stopWatch.getTotalTimeSeconds());
+        compressProcessVo.setCompressDuration((float) stopWatch.getTotalTimeSeconds());
         return compressProcessVo;
 
     }
@@ -193,8 +196,7 @@ public class JavaCvUtil {
             grabber.close();
         }
     }
-    public static VideoInfo videoMp4Convert(String inputfile, String outputfile) throws Exception{
-        VideoInfo videoInfo = new VideoInfo();
+    public  void   videoMp4Convert(String inputfile, String outputfile,VideoInfo videoInfo) throws Exception{
         //获取文件的基本信息
         FFmpegLogCallback.set();
         FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputfile);
@@ -221,31 +223,31 @@ public class JavaCvUtil {
         grabber.close();
         videoInfo.setDuration(duration);
         //判断如果码率过小  则不进行转码
-        if(miniVideoBitrate>duration){
-            videoInfo.setStatus(2);
-
-            return videoInfo;
+        if(miniVideoBitrate > videoBitrate){
+            videoInfo.setMsg("码率过小，不处理");
         }else {
             double v = 0.2;
             double newVideoBitrate = videoBitrate * v;
             CompressProcessVo compressProcessVo = convertByFfmpeg(inputfile, outputfile, (int) newVideoBitrate);
             videoInfo.setCompressDuration(compressProcessVo.getCompressDuration());
-            if(compressProcessVo.getFlag()){
-                videoInfo.setStatus(2);
-            }else {
-                videoInfo.setStatus(3);
-            }
             //新的转码后的文件覆盖之前的文件
             File oldFile = new File(inputfile);
             File newFile = new File(outputfile);
-            // 使用 FileUtils.copyFile() 方法实现文件覆盖
-            FileUtil.copyFile(oldFile, newFile);
-            FileUtil.del(oldFile);
-            FileUtil.rename(newFile,inputfile,true);
-            System.out.println("文件覆盖成功");
-        }
-        return videoInfo;
+            if(compressProcessVo.getFlag()){
+                //成功
+                videoInfo.setCompressFileSize(newFile.length());
+                boolean del = FileUtil.del(oldFile);
+                if(del){
+                    FileUtil.rename(newFile,inputfile,true);
+                }
 
+            }else {
+                //失败
+                FileUtil.del(newFile);
+                videoInfo.setMsg("压缩算法异常");
+                throw new BusinessException("压缩算法异常");
+            }
+        }
 
     }
     public static String videoConvert(String inputFile, String outputPath, Integer width, Integer height, String videoFormat) {
@@ -351,56 +353,11 @@ public class JavaCvUtil {
 
     }
 
-    public static void videoDeal(){
-        String inputFilePath = "D:\\BaiduNetdiskDownload\\原始文件.MP4";
-        String outputFilePath = "./output.mp4";
-        int targetBitrate = 1024000; // 目标码率为 1 Mbps
-
-        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputFilePath);
-        FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(outputFilePath, grabber.getImageWidth(), grabber.getImageHeight());
-        FFmpegLogCallback.set();
-        try {
-            grabber.start();
-            recorder.setFormat(grabber.getFormat());
-            recorder.setFrameRate(grabber.getFrameRate());
-            recorder.setVideoCodec(grabber.getVideoCodec());
-            recorder.setPixelFormat(grabber.getPixelFormat());
-            recorder.setVideoBitrate(targetBitrate);
-
-            recorder.start();
-
-            Frame frame;
-            while ((frame = grabber.grabFrame()) != null) {
-                recorder.record(frame);
-            }
-
-            recorder.stop();
-            grabber.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) throws Exception {
 //        videoConvert("D:\\BaiduNetdiskDownload\\原始文件.MP4","./outfile.mp4");
-        check();
+        JavaCvUtil javaCvUtil = new JavaCvUtil();
+        javaCvUtil.videoMp4Convert("./old.MP4","./old1.mp4",new VideoInfo());
     }
 
-    static void  check(){
-//        File mp4File = new File("path/to/your/mp4/file.mp4");
-        String videoFilePath = "./outfile0.mp4";
-
-        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoFilePath);
-        try {
-            grabber.start();
-            System.out.println("Duration (in seconds): " + grabber.getLengthInTime() / 1000000);
-            System.out.println("Bitrate: " + grabber.getVideoBitrate());
-            System.out.println("Resolution: " + grabber.getImageWidth() + "x" + grabber.getImageHeight());
-            // 可以根据需要获取更多信息
-
-            grabber.stop();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

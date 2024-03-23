@@ -58,6 +58,7 @@ public class FileListener extends FileAlterationListenerAdaptor {
     public void onFileChange(File file) {
         String compressedPath = file.getAbsolutePath();
         //不管
+        log.info(LogTemplate.PROCESS_LOG_MSG_TEMPLATE,"文件监听","修改",file.getAbsolutePath());
     }
 
     @Override

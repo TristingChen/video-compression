@@ -31,10 +31,6 @@ public class VideoInfo {
      */
     private String fullFileDirectory;
 
-    /**
-     * 压缩后名称的全路径
-     */
-    private String fullCompressFilePath;
 
     /**
      * 文件名称
