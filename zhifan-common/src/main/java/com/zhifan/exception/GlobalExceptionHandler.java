@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2020/2/19 15:10
  */
 @Slf4j
-@RestControllerAdvice
+//@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)

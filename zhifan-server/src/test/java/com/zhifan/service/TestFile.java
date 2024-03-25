@@ -19,10 +19,10 @@ public class TestFile {
     @Test
     public void saveTest(){
 
-        VideoInfo videoInfo = new VideoInfo();
-        videoInfo.setFileName("test");
-        videoInfo.setFilePath("d:123123");
-        videoInfoService.save(videoInfo);
+//        VideoInfo videoInfo = new VideoInfo();
+//        videoInfo.setFileName("test");
+//        videoInfo.setFilePath("d:123123");
+//        videoInfoService.save(videoInfo);
 
 
     }

@@ -1,12 +1,18 @@
 spring:
   application:
     name: video-comporess
-
-  # 配置文件上传大小限制
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
   servlet:
     multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+
 
   datasource:
     username: admin
@@ -40,12 +46,42 @@ mybatis-plus:
 
 
 
-server:
-  port: 8070
-
 # [可选] 日志配置, 一般不需要改
 logging:
   config: classpath:logback-spring.xml
 
 #ffmpegCommand: "ffmpeg -i {input_file} -b:v {videoBitrate} -bufsize 1000k  {output_file}"
+
+#--------renren配置
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 1000
+      min-spare: 30
+  port: 8080
+  servlet:
+    context-path: /api
+    session:
+      cookie:
+        http-only: true
+
+knife4j:
+  enable: true
+  basic:
+    enable: false
+    username: admin
+    password: admin
+  setting:
+    enableFooter: false
+
+
+
+# 是否开启redis缓存  true开启   false关闭
+renren:
+  redis:
+    open: false
+
+#mybatis
+
 

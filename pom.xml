@@ -17,6 +17,8 @@
     <modules>
         <module>zhifan-common</module>
         <module>zhifan-server</module>
+        <module>admin</module>
+
     </modules>
 
     <properties>
@@ -52,7 +54,7 @@
         <!--easy-captcha 验证码-->
         <easy-captcha.version>2.2.2</easy-captcha.version>
         <!--文档工具包-->
-        <knife4j.version>3.0.3</knife4j.version>
+        <knife4j.version>2.0.9</knife4j.version>
         <japidocs.version>1.4.4</japidocs.version>
         <commons-langs.version>3.13.0</commons-langs.version>
     </properties>
@@ -157,6 +159,9 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+
+
     </dependencies>
 
     <build>
