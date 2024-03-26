@@ -44,13 +44,7 @@ public class ExecController {
     }
 
     @GetMapping("/video-info/page")
-    @ApiOperation("分页")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType="int") ,
-            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query",required = true, dataType="int") ,
-            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType="String") ,
-            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType="String")
-    })
+
     public Result<PageData<VideoInfo>> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<VideoInfo> page = videoInfoService.selectPage(params);
 

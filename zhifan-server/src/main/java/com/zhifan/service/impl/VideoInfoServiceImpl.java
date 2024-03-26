@@ -21,8 +21,6 @@ import com.zhifan.utils.JavaCvUtil;
 import io.renren.common.constant.Constant;
 import io.renren.common.page.PageData;
 import io.renren.common.utils.ConvertUtils;
-import io.renren.modules.sys.dto.SysDictTypeDTO;
-import io.renren.modules.sys.entity.SysDictTypeEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

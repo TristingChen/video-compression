@@ -61,7 +61,7 @@ server:
       min-spare: 30
   port: 8080
   servlet:
-    context-path: /api
+#    context-path: /api
     session:
       cookie:
         http-only: true

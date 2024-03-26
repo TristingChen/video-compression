@@ -3,8 +3,6 @@ package com.zhifan.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhifan.entity.VideoInfo;
 import io.renren.common.page.PageData;
-import io.renren.common.service.BaseService;
-import io.renren.modules.sys.dto.SysDictTypeDTO;
 
 import java.io.File;
 import java.util.List;
