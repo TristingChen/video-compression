@@ -23,8 +23,7 @@ public class FileConfigReq {
 
     private String desc;
 
-    @NotNull
-    private LocalDate startDay = LocalDate.now();
+
 
 
 

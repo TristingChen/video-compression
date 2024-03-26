@@ -6,6 +6,10 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhifan.constant.LogTemplate;
 import com.zhifan.entity.FileConfig;
@@ -14,6 +18,11 @@ import com.zhifan.mapper.FileConfigMapper;
 import com.zhifan.mapper.VideoInfoMapper;
 import com.zhifan.service.VideoInfoService;
 import com.zhifan.utils.JavaCvUtil;
+import io.renren.common.constant.Constant;
+import io.renren.common.page.PageData;
+import io.renren.common.utils.ConvertUtils;
+import io.renren.modules.sys.dto.SysDictTypeDTO;
+import io.renren.modules.sys.entity.SysDictTypeEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenjialing
@@ -133,4 +143,43 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
             });
         });
     }
+
+    @Override
+    public PageData<VideoInfo> selectPage(Map<String, Object> params) {
+
+        QueryWrapper<VideoInfo> wrapper = getWrapper(params);
+        //分页参数
+        long curPage = 1;
+        long limit = 10;
+
+        if (params.get(Constant.PAGE) != null) {
+            curPage = Long.parseLong((String) params.get(Constant.PAGE));
+        }
+        if (params.get(Constant.LIMIT) != null) {
+            limit = Long.parseLong((String) params.get(Constant.LIMIT));
+        }
+        Page<VideoInfo> objectPage = new Page<>(curPage, limit);
+        Page<VideoInfo> page = this.page(objectPage, wrapper);
+
+        return getPageData(page.getRecords(), page.getTotal(), VideoInfo.class);
+    }
+
+    protected <T> PageData<T> getPageData(List<?> list, long total, Class<T> target) {
+        List<T> targetList = ConvertUtils.sourceToTarget(list, target);
+
+        return new PageData<>(targetList, total);
+    }
+
+    private QueryWrapper<VideoInfo> getWrapper(Map<String, Object> params) {
+
+
+
+        String fileName = (String) params.get("fileName");
+        QueryWrapper<VideoInfo> wrapper = new QueryWrapper<>();
+        wrapper.like(StrUtil.isNotBlank(fileName), "file_name", fileName);
+
+        return wrapper;
+    }
+
+
 }
