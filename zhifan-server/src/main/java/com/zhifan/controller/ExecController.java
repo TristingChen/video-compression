@@ -1,12 +1,14 @@
 package com.zhifan.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.zhifan.entity.FileConfig;
 import com.zhifan.entity.VideoInfo;
 import com.zhifan.response.CommonResponse;
 import com.zhifan.service.FileConfigService;
 import com.zhifan.service.VideoInfoService;
 import com.zhifan.vo.FileConfigReq;
+import com.zhifan.vo.VideoInfoResp;
 import io.renren.common.constant.Constant;
 import io.renren.common.page.PageData;
 import io.renren.common.utils.Result;
@@ -45,15 +47,29 @@ public class ExecController {
 
     @GetMapping("/video-info/page")
 
-    public Result<PageData<VideoInfo>> page(@ApiIgnore @RequestParam Map<String, Object> params){
-        PageData<VideoInfo> page = videoInfoService.selectPage(params);
+    public Result<PageData<VideoInfoResp>> page(@ApiIgnore @RequestParam Map<String, Object> params){
+        PageData<VideoInfoResp> page = videoInfoService.selectPage(params);
 
-        return new Result<PageData<VideoInfo>>().ok(page);
+        return new Result<PageData<VideoInfoResp>>().ok(page);
     }
+
+    @GetMapping("/file-config/getOne/{id}")
+    public CommonResponse getOne(@PathVariable("id") Long id){
+        return CommonResponse.success(fileConfigService.getById(id));
+    }
+
 
     @PostMapping("/file-config/save")
     public CommonResponse save(@Valid @RequestBody FileConfigReq req){
         fileConfigService.saveOne(req);
+
+        return CommonResponse.success();
+    }
+
+    @PutMapping("/file-config/save")
+    public CommonResponse edit(@Valid @RequestBody FileConfigReq req){
+
+        fileConfigService.editOne(req,req.getId());
         return CommonResponse.success();
     }
 

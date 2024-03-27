@@ -16,6 +16,6 @@ public interface FileConfigService extends IService<FileConfig> {
 
     void monitorPath(String path);
 
-    void editOne(FileConfigReq req,int id);
+    void editOne(FileConfigReq req,Long id);
 
 }

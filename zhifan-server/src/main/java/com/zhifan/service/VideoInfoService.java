@@ -2,6 +2,7 @@ package com.zhifan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhifan.entity.VideoInfo;
+import com.zhifan.vo.VideoInfoResp;
 import io.renren.common.page.PageData;
 
 import java.io.File;
@@ -22,7 +23,7 @@ public interface VideoInfoService extends IService<VideoInfo> {
 
     void CompressListTask(List<VideoInfo> unStartTask);
 
-    PageData<VideoInfo> selectPage(Map<String, Object> params);
+    PageData<VideoInfoResp> selectPage(Map<String, Object> params);
 
 
 }

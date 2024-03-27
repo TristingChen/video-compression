@@ -17,7 +17,7 @@ import java.util.Date;
 @Data
 public class FileConfigReq {
 
-
+    private Long id;
     @NotNull
     private String globalFilePath;
 

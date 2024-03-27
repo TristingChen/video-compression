@@ -83,16 +83,17 @@ public class FileConfigServiceImpl extends ServiceImpl<FileConfigMapper, FileCon
      * @param id
      */
     @Override
-    public void editOne(FileConfigReq req, int id) {
+    public void editOne(FileConfigReq req, Long id) {
         //判断新旧目录是否一直
         FileConfig oneById = this.getById(id);
         if(!oneById.getGlobalFilePath().equals(req.getGlobalFilePath())){
             ////先取消原来的目录监听
             fileMonitor.removeDirectoryListener(monitor,oneById.getGlobalFilePath());
         }
-        //重新监听
+        oneById.setUpdatedAt(LocalDateTime.now());
         BeanUtil.copyProperties(req,oneById);
-        this.save(oneById);
+        this.updateById(oneById);
+        //重新监听
         monitorPath(req.getGlobalFilePath());
     }
 

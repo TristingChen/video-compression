@@ -18,6 +18,7 @@ import com.zhifan.mapper.FileConfigMapper;
 import com.zhifan.mapper.VideoInfoMapper;
 import com.zhifan.service.VideoInfoService;
 import com.zhifan.utils.JavaCvUtil;
+import com.zhifan.vo.VideoInfoResp;
 import io.renren.common.constant.Constant;
 import io.renren.common.page.PageData;
 import io.renren.common.utils.ConvertUtils;
@@ -29,6 +30,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +90,8 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
                     videoInfo.setFullFileDirectory(FileUtil.getParent(file,1).getAbsolutePath());
                     videoInfo.setFileSize(FileUtil.size(file));
                     videoInfo.setFileName(name);
+                    videoInfo.setCreatedAt(LocalDateTime.now());
+
                     this.save(videoInfo);
 
                 }else {
@@ -143,7 +149,7 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
     }
 
     @Override
-    public PageData<VideoInfo> selectPage(Map<String, Object> params) {
+    public PageData<VideoInfoResp> selectPage(Map<String, Object> params) {
 
         QueryWrapper<VideoInfo> wrapper = getWrapper(params);
         //分页参数
@@ -158,10 +164,39 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
         }
         Page<VideoInfo> objectPage = new Page<>(curPage, limit);
         Page<VideoInfo> page = this.page(objectPage, wrapper);
+        //转义
+        ArrayList<VideoInfoResp> videoInfoResps = new ArrayList<>();
+        if(!ObjectUtil.isEmpty(page)){
+            page.getRecords().forEach(videoInfo -> {
+                VideoInfoResp videoInfoResp = new VideoInfoResp();
+                BeanUtil.copyProperties(videoInfo,videoInfoResp);
+                if(videoInfo.getStatus() == 0){
+//                     * 0未开始，1进行中，2，成功，-1失败
+                    videoInfoResp.setStatusName("未开始");
+                }else if(videoInfo.getStatus() == 1){
+                    videoInfoResp.setStatusName("进行中");
 
-        return getPageData(page.getRecords(), page.getTotal(), VideoInfo.class);
+                }else if(videoInfo.getStatus() == 2){
+                    videoInfoResp.setStatusName("成功");
+
+                }else {
+                    videoInfoResp.setStatusName("失败");
+                }
+                videoInfoResp.setFileSize(decimalTwo(videoInfo.getFileSize()/1024/1024));
+                videoInfoResp.setCompressFileSize(decimalTwo(videoInfo.getCompressFileSize()/1024/1024));
+                videoInfoResp.setCompressDuration(Math.round(videoInfo.getCompressDuration()));
+                videoInfoResps.add(videoInfoResp);
+            });
+        }
+        return getPageData(videoInfoResps, page.getTotal(), VideoInfoResp.class);
     }
 
+    private float decimalTwo(float number){
+        BigDecimal bd = new BigDecimal(number);
+        BigDecimal bigDecimal = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        // 设置保留两位小数并四舍五入
+        return bd.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+    }
     protected <T> PageData<T> getPageData(List<?> list, long total, Class<T> target) {
         List<T> targetList = ConvertUtils.sourceToTarget(list, target);
 

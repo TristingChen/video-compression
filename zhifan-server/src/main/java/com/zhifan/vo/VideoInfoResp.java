@@ -1,4 +1,4 @@
-package com.zhifan.entity;
+package com.zhifan.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("video_info")
-public class VideoInfo {
+public class VideoInfoResp {
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
@@ -45,7 +45,7 @@ public class VideoInfo {
      * 压缩状态
      * 0未开始，1进行中，2，成功，-1失败
      */
-    private Integer status;
+    private String statusName;
     /**
      * 异常的消息
      */
