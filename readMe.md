@@ -2,7 +2,7 @@
 # 1.进入项目，renren-ui,进行前端的编译
     npm install
     
-    npm build
+    npm run build
 # 2.步骤一中产生的dist文件，挪至\video-compression\zhifan-server\src\main\resources
     注意：后期考虑前端编译后自行文件迁移
     目的：下一步中 maven编译将前端资源代码打包进jar包中
