@@ -1,9 +1,3 @@
-CREATE TABLE IF NOT EXISTS `blog` (
-                        `id` int AUTO_INCREMENT NOT NULL,
-                        `title` varchar(255) DEFAULT NULL,
-                        PRIMARY KEY (`id`)
-);
-
 CREATE TABLE IF NOT EXISTS "video_info" (
                         "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                         "file_path" text(255) NOT NULL DEFAULT '',

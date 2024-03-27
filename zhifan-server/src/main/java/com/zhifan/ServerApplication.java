@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Slf4j
 @SpringBootApplication
 @EnableScheduling
-@ComponentScan(value = {"com.zhifan.*","io.renren.*"})
+@ComponentScan(value = {"com.zhifan.*","io.renren.**","springfox.documentation.schema"})
 @MapperScan(basePackages = {"com.zhifan.**.mapper","io.renren.**.dao"})
 public class ServerApplication {
     public static void main(String[] args) {
