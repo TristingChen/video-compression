@@ -10,7 +10,12 @@
 # 3.在项目跟目录进行java项目的maven编译
     mvn install
 
-# 4.服务器环境的运行
+# 4.sqlite数据同步
+    1.创建sqlite数据库---首次运行即可创建
+    2.数据同步：
+    数据目录--db/sqlite_main.sql
+
+# 5.服务器环境的运行
     * 准备jdk环境 ffmpeg环境
     * 将\zhifan-server\src\main\resources\application.yaml，和sqlite3的初始化数据库放在和jar包同级目录下
     * application.yaml改动说明：如环境中有ffmpeg则使用服务器的ffmpeg,如没有使用javacv
