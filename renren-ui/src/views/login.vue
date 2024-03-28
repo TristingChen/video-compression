@@ -2,7 +2,7 @@
   <div class="rr-login">
     <div class="rr-login-wrap">
       <div class="rr-login-left hidden-sm-and-down">
-        <p class="rr-login-left-title">人人权限系统</p>
+        <p class="rr-login-left-title">fastSoft</p>
       </div>
 
       <div class="rr-login-right">
@@ -29,8 +29,7 @@
       </div>
     </div>
     <div class="login-footer">
-      <p><a href="https://www.renren.io/enterprise" target="_blank">企业版</a> | <a href="https://www.renren.io/cloud" target="_blank">微服务版</a></p>
-      <p><a href="https://www.renren.io/" target="_blank">人人开源</a>{{ state.year }} © renren.io</p>
+      <p><a  target="_blank">fastSoft</a>{{ state.year }} </p>
     </div>
   </div>
 </template>

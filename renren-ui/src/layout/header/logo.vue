@@ -28,7 +28,7 @@ export default defineComponent({
   <span :class="`rr-header-ctx-logo-img-wrap ${'enabled-logo-' + app.enabledLogo}`">
     <!-- 支持显示图片logo或者产品名称缩写，二选一模式，通过注释开启功能，app.enabledLogo控制正常模式下图片logo是否显示，如果有图片logo，收起状态会强制显示图片logo -->
     <!-- <img :src="props.logoUrl" class="rr-header-ctx-logo-img" :alt="props.logoName" /> -->
-    <span>人人</span>
+    <span>fast</span>
     <span class="rr-header-ctx-logo-line"></span>
   </span>
   <span class="rr-header-ctx-logo-text">{{ props.logoName }}</span>

@@ -1,10 +1,10 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-home">
-      <h3>项目介绍</h3>
+      <h3>产品介绍</h3>
       <ul>
-        <li>一个很不错的项目</li>
-
+        <li>高效的压缩算法：解决大文件存储与传输的痛点</li>
+        <li>专业的技术团队，保障项目的运行</li>
       </ul>
 
     </div>
