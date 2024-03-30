@@ -20,6 +20,7 @@
               <el-table-column prop="duration" label="视频长度(秒)" header-align="center" align="center"></el-table-column>
               <el-table-column prop="fileSize" label="文件大小(MB)" header-align="center" align="center"></el-table-column>
               <el-table-column prop="compressFileSize" label="压缩后文件大小(MB)" header-align="center" align="center"></el-table-column>
+              <el-table-column prop="compressRatio" label="压缩率(%)" header-align="center" align="center"></el-table-column>
               <el-table-column prop="compressDuration" label="转码花费的时间(秒)" header-align="center" align="center"></el-table-column>
               <el-table-column prop="msg" label="异常的消息" header-align="center" align="center"></el-table-column>
               <el-table-column prop="createdAt" label="创建时间" header-align="center" align="center"></el-table-column>

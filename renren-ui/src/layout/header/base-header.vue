@@ -37,7 +37,7 @@ export default defineComponent({
 <template>
   <div class="rr-header-ctx">
     <div class="rr-header-ctx-logo hidden-xs-only">
-      <logo :logoUrl="logo" logoName="fastSoft"></logo>
+      <logo :logoUrl="logo" logoName="采集站压缩系统"></logo>
     </div>
     <div class="rr-header-right">
       <div class="rr-header-right-left">

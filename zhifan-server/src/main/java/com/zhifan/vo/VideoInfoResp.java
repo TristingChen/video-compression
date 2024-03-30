@@ -72,6 +72,11 @@ public class VideoInfoResp {
      */
     private float compressFileSize;
 
+    /**
+     * 压缩比例
+     */
+    private String compressRatio;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)		// 反序列化
     @JsonSerialize(using = LocalDateTimeSerializer.class)		// 序列化

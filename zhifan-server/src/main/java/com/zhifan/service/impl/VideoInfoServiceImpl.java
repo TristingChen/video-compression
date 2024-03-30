@@ -170,6 +170,7 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
             page.getRecords().forEach(videoInfo -> {
                 VideoInfoResp videoInfoResp = new VideoInfoResp();
                 BeanUtil.copyProperties(videoInfo,videoInfoResp);
+                videoInfoResp.setCompressRatio("0%");
                 if(videoInfo.getStatus() == 0){
 //                     * 0未开始，1进行中，2，成功，-1失败
                     videoInfoResp.setStatusName("未开始");
@@ -178,6 +179,7 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
 
                 }else if(videoInfo.getStatus() == 2){
                     videoInfoResp.setStatusName("成功");
+                    videoInfoResp.setCompressRatio(decimalTwo(100 -videoInfo.getCompressFileSize() / videoInfo.getFileSize() * 100) +"%");
 
                 }else {
                     videoInfoResp.setStatusName("失败");
@@ -185,6 +187,7 @@ public class VideoInfoServiceImpl  extends ServiceImpl<VideoInfoMapper, VideoInf
                 videoInfoResp.setFileSize(decimalTwo(videoInfo.getFileSize()/1024/1024));
                 videoInfoResp.setCompressFileSize(decimalTwo(videoInfo.getCompressFileSize()/1024/1024));
                 videoInfoResp.setCompressDuration(Math.round(videoInfo.getCompressDuration()));
+
                 videoInfoResps.add(videoInfoResp);
             });
         }

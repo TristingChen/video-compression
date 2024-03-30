@@ -4,7 +4,7 @@
 export const themeSetting = {
   sidebar: "dark",
   topHeader: "primary",
-  themeColor: "#17B3A3",
+  themeColor: "#2d6fb4",
   navLayout: "left",
   contentFull: true,
   logoAuto: false,

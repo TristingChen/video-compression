@@ -2,7 +2,7 @@
   <div class="rr-login">
     <div class="rr-login-wrap">
       <div class="rr-login-left hidden-sm-and-down">
-        <p class="rr-login-left-title">fastSoft</p>
+        <p class="rr-login-left-title">执法记录仪采集站压缩系统</p>
       </div>
 
       <div class="rr-login-right">
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="login-footer">
-      <p><a  target="_blank">fastSoft</a>{{ state.year }} </p>
+      <p><a  target="_blank">智慧交通管理科技创新联合实验室</a>{{ state.year }} V0.1 版权所有</p>
     </div>
   </div>
 </template>
@@ -109,7 +109,7 @@ const onLogin = () => {
 .rr-login {
   width: 100vw;
   height: 100vh;
-  background: #019ec4;
+  background: #356996;
   position: relative;
   display: flex;
   flex-direction: column;
