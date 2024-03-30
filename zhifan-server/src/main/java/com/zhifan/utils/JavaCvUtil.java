@@ -37,7 +37,7 @@ import java.util.List;
 public class JavaCvUtil {
 
     @Value("${ffmpegCommand:\"\"}")
-    private static String ffmpegCommond;
+    private  String ffmpegCommond;
 
     /**
      * 2m的以下的码率不要处理
@@ -47,7 +47,7 @@ public class JavaCvUtil {
      * 基于JavaCV跨平台调用ffmpeg命令
      * duration 录制时长为多少秒的视频
      */
-    public static CompressProcessVo convertByFfmpeg(String sourcePath, String destPath,int videoBitrate) {
+    public  CompressProcessVo convertByFfmpeg(String sourcePath, String destPath,int videoBitrate) {
         StopWatch stopWatch = new StopWatch();
         CompressProcessVo compressProcessVo = new CompressProcessVo();
         stopWatch.start("开始执行基于JavaCV跨平台调用ffmpeg命令录制视频");
